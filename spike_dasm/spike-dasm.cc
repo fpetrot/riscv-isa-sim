@@ -11,9 +11,38 @@
 #include "platform.h"
 #include <iostream>
 #include <string>
+#include <algorithm>
+#include <cctype>
 #include <cstdint>
 #include <fesvr/option_parser.h>
 using namespace std;
+
+std::string compress_whitespace(std::string& s) {
+  // 1. Remove leading white space
+  s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char ch) {
+        return !std::isspace(ch);
+        }));
+
+  // 2. Remove trailing white space
+  s.erase(std::find_if(s.rbegin(), s.rend(), [](unsigned char ch) {
+        return !std::isspace(ch);
+        }).base(), s.end());
+
+  // 3. Replace multiple consecutive white spaces with a single space
+  auto new_end = std::unique(s.begin(), s.end(), [](unsigned char a, unsigned char b) {
+      return std::isspace(a) && std::isspace(b);
+      });
+
+  // 4. Erase the extra characters at the end of the string
+  s.erase(new_end, s.end());
+
+  // 5. Replace any remaining whitespace character with a standard space ' '
+  std::replace_if(s.begin(), s.end(), [](unsigned char ch) {
+      return std::isspace(ch);
+      }, ' ');
+
+  return s;
+}
 
 int main(int UNUSED argc, char** argv)
 {
@@ -40,6 +69,7 @@ int main(int UNUSED argc, char** argv)
 
   while (getline(cin, s))
   {
+#if 0
     for (size_t pos = 0; (pos = s.find("DASM(", pos)) != string::npos; )
     {
       size_t start = pos;
@@ -61,8 +91,13 @@ int main(int UNUSED argc, char** argv)
       s = s.substr(0, start) + dis + s.substr(endp - &s[0] + 1);
       pos = start + dis.length();
     }
-
     cout << s << '\n';
+#else
+    uint32_t bits = strtoull(s.c_str(), NULL, 16);
+    string dis = disassembler->disassemble((insn_bits_t)bits);
+    cout << compress_whitespace(dis) << '\n';
+    cout.flush();
+#endif
   }
 
   return 0;

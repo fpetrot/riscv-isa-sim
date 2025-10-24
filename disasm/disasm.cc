@@ -1101,8 +1101,11 @@ void disassembler_t::add_instructions(const isa_parser_t* isa, bool strict)
   DEFINE_ITYPE(jalr);
 
   add_noarg_insn(this, "nop", match_addi, mask_addi | mask_rd | mask_rs1 | mask_imm);
+#if 0
+  /* To see the base insns */
   DEFINE_I0TYPE("li", addi);
   DEFINE_I1TYPE("mv", addi);
+#endif
   DEFINE_ITYPE(addi);
   DEFINE_ITYPE(slti);
   add_insn(new disasm_insn_t("seqz", match_sltiu | (1 << imm_shift), mask_sltiu | mask_imm, {&xrd, &xrs1}));

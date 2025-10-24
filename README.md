@@ -1,3 +1,9 @@
+A few words about this Spike fork
+============================
+This is what I would call a hammer to crush a fly: this fork changes very few things in spike so as to make `spike-dasm` usable as a gtkwave process to output asm instructions instead of binary code in the wave forms.
+This is done in right clicking the signal name, then "Data Format", then "Transaction Filter Process", and then select the `spike-dasm` in the file popup window, then highlight it into gtkwave popup (important: it is not selected by default), and click Ok.
+In addition, it renames the registers with their hardware names as this is used to debug a small 3 pipeline stages processor we've been developing as an educational vehicle.
+
 Spike RISC-V ISA Simulator
 ============================
 
