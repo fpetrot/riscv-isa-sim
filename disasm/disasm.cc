@@ -1077,14 +1077,18 @@ void disassembler_t::add_instructions(const isa_parser_t* isa, bool strict)
     DISASM_INSN("lpad", lpad, 0, {&bigimm});
   }
 
+#if 0
   add_insn(new disasm_insn_t("j", match_jal, mask_jal | mask_rd, {&jump_target}));
+#endif
   add_insn(new disasm_insn_t("jal", match_jal | match_rd_ra, mask_jal | mask_rd, {&jump_target}));
   add_insn(new disasm_insn_t("jal", match_jal, mask_jal, {&xrd, &jump_target}));
 
+#if 0
   DEFINE_B1TYPE("beqz", beq);
   DEFINE_B1TYPE("bnez", bne);
   DEFINE_B1TYPE("bltz", blt);
   DEFINE_B1TYPE("bgez", bge);
+#endif
   DEFINE_BTYPE(beq)
   DEFINE_BTYPE(bne)
   DEFINE_BTYPE(blt)
@@ -1095,8 +1099,10 @@ void disassembler_t::add_instructions(const isa_parser_t* isa, bool strict)
   DEFINE_LTYPE(lui);
   DEFINE_LTYPE(auipc);
 
-  add_insn(new disasm_insn_t("ret", match_jalr | match_rs1_ra, mask_jalr | mask_rd | mask_rs1 | mask_imm, {}));
+  //add_insn(new disasm_insn_t("ret", match_jalr | match_rs1_ra, mask_jalr | mask_rd | mask_rs1 | mask_imm, {}));
+#if 0
   DEFINE_I2TYPE("jr", jalr);
+#endif
   add_insn(new disasm_insn_t("jalr", match_jalr | match_rd_ra, mask_jalr | mask_rd | mask_imm, {&xrs1}));
   DEFINE_ITYPE(jalr);
 
