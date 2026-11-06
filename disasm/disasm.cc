@@ -649,6 +649,9 @@ typedef struct {
 
 std::string disassembler_t::disassemble(insn_t insn) const
 {
+  if (insn.bits() == 0xDEADC0DE) {
+    return "Sentinelle prof DEADC0DE"; 
+  }
   const disasm_insn_t* disasm_insn = lookup(insn);
   return disasm_insn ? disasm_insn->to_string(insn) : "unknown";
 }
@@ -782,11 +785,13 @@ static void NOINLINE add_bimmtype_insn(disassembler_t* d, const char* name, uint
   d->add_insn(new disasm_insn_t(name, match, mask, {&xrs1, &b_imm5, &branch_target}));
 }
 
+#if 0
 static void NOINLINE add_b1type_insn(disassembler_t* d, const char* name, uint32_t match, uint32_t mask)
 {
   const uint32_t mask_rs2 = 0x1fUL << 20;
   d->add_insn(new disasm_insn_t(name, match, mask | mask_rs2, {&xrs1, &branch_target}));
 }
+#endif
 
 static void NOINLINE add_frtype_insn(disassembler_t* d, const char* name, uint32_t match, uint32_t mask)
 {
